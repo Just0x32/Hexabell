@@ -23,6 +23,13 @@ namespace Hexabell
         public MainWindow()
         {
             InitializeComponent();
+
+            
+        }
+
+        private void BasicPolygon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            DragMove();
         }
     }
 }

@@ -5,18 +5,40 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hexabell"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button HorizontalAlignment="Center" VerticalAlignment="Center">
-            <Button.Template>
-                <ControlTemplate>
-                    <Grid>
-                        <Polygon Points="60,26 45,52 15,52 0,26 15,0 45,0"
-                                 Fill="AliceBlue"/>
-                    </Grid>
-                </ControlTemplate>
-            </Button.Template>
-        </Button>
+        Title="MainWindow" Height="600" Width="570"
+        WindowStyle="None" ResizeMode="CanMinimize"
+        AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+    <Canvas Background="Transparent">
 
-    </Grid>
+        <Grid Canvas.Left="185" Canvas.Top="213">
+            <Polygon x:Name="BasicPolygon" MouseLeftButtonDown="BasicPolygon_MouseLeftButtonDown"
+                     Stretch="Uniform" Fill="AliceBlue" Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
+
+            <Button Height="20" Width="40"/>
+        </Grid>
+
+        <Button x:Name="FirstTaskButton"
+                Canvas.Left="0" Canvas.Top="107"
+                Template="{DynamicResource HexagonButtonTemplate}"/>
+
+        <Button x:Name="SecondTaskButton"
+                Canvas.Left="185" Canvas.Top="0"
+                Template="{DynamicResource HexagonButtonTemplate}"/>
+
+        <Button x:Name="ThirdTaskButton"
+                Canvas.Left="370" Canvas.Top="107"
+                Template="{DynamicResource HexagonButtonTemplate}"/>
+
+        <Button x:Name="FourthTaskButton"
+                Canvas.Left="370" Canvas.Top="320"
+                Template="{DynamicResource HexagonButtonTemplate}"/>
+
+        <Button x:Name="FifthTaskButton"
+                Canvas.Left="185" Canvas.Top="426"
+                Template="{DynamicResource HexagonButtonTemplate}"/>
+
+        <Button x:Name="SixthTaskButton"
+                Canvas.Left="0" Canvas.Top="320"
+                Template="{DynamicResource HexagonButtonTemplate}"/>
+    </Canvas>
 </Window>
