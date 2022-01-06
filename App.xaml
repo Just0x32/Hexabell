@@ -4,6 +4,10 @@
              xmlns:local="clr-namespace:Hexabell"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <ControlTemplate x:Key="HexagonButtonTemplate">
+            <Grid>
+                <Polygon Fill="AliceBlue" Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
+            </Grid>
+        </ControlTemplate>
     </Application.Resources>
 </Application>
