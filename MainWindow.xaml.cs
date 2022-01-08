@@ -24,12 +24,17 @@ namespace Hexabell
         {
             InitializeComponent();
 
-            
+            Button button = FirstTaskButton;
         }
 
         private void BasicPolygon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             DragMove();
         }
+
+        private void FirstTaskButton_Click(object sender, RoutedEventArgs e) => MessageBox.Show("FirstTaskButton");
+
+        private void SecondTaskButton_Click(object sender, RoutedEventArgs e) => MessageBox.Show("SecondTaskButton");
+
     }
 }

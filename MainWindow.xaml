@@ -17,11 +17,13 @@
             <Button Height="20" Width="40"/>
         </Grid>
 
-        <Button x:Name="FirstTaskButton"
+        <Button x:Name="FirstTaskButton" Click="FirstTaskButton_Click"
+                
+                
                 Canvas.Left="0" Canvas.Top="107"
                 Template="{DynamicResource HexagonButtonTemplate}"/>
 
-        <Button x:Name="SecondTaskButton"
+        <Button x:Name="SecondTaskButton" Click="SecondTaskButton_Click"
                 Canvas.Left="185" Canvas.Top="0"
                 Template="{DynamicResource HexagonButtonTemplate}"/>
 
