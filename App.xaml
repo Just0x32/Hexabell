@@ -6,32 +6,12 @@
     <Application.Resources>
         <ControlTemplate TargetType="Button" x:Key="HexagonButtonTemplate">
             <Polygon x:Name="HexagonButtonPolygon"
-                     Fill="LightSteelBlue"
+                     Fill="{TemplateBinding Background}"
                      Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter TargetName="HexagonButtonPolygon" Property="Fill" Value="PowderBlue"/>
                 </Trigger>
-
-                <MultiTrigger>
-                    <MultiTrigger.Conditions>
-                        <Condition Property="IsPressed" Value="True"/>
-                        <Condition SourceName="HexagonButtonPolygon" Property="Fill" Value="LightSteelBlue"/>
-                    </MultiTrigger.Conditions>
-                    <Setter TargetName="HexagonButtonPolygon" Property="Fill" Value="Red"/>
-                </MultiTrigger>
-
-                <!--<Trigger Property="IsPressed" Value="True">
-                    <Setter TargetName="HexagonButtonPolygon" Property="Fill" Value="Red"/>
-                </Trigger>-->
-
-                <!--<MultiDataTrigger>
-                    <MultiDataTrigger.Conditions>
-                        <Condition Binding="{Binding Path=IsPressed}" Value="True"/>
-                        --><!--<Condition Binding="{Binding ElementName=HexagonButtonPolygon, Path=Fill}" Value="PowderBlue"/>--><!--
-                    </MultiDataTrigger.Conditions>
-                    <Setter TargetName="HexagonButtonPolygon" Property="Fill" Value="Red"/>
-                </MultiDataTrigger>-->
             </ControlTemplate.Triggers>
         </ControlTemplate>
     </Application.Resources>
