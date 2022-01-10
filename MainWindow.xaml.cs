@@ -21,19 +21,18 @@ namespace Hexabell
     /// </summary>
     public partial class MainWindow : Window
     {
-
         #region [ Properties and fields ]
-        private Thread[] bellThreads;
+        ViewModel viewModel;
 
-        public bool[] IsTaskEnabled { get; private set; }
+        public bool[] IsTaskEnabled { get => viewModel.IsTaskEnabled; }
 
         public Brush[] ButtonColors { get; private set; }
 
-        private readonly Brush DisabledTaskButtonBackground = Brushes.LightSteelBlue;
+        private readonly Brush disabledTaskButtonBackground = Brushes.LightSteelBlue;
 
-        private readonly Brush EnabledTaskButtonBackground = Brushes.LightSkyBlue;
+        private readonly Brush enabledTaskButtonBackground = Brushes.LightSkyBlue;
 
-        public readonly Brush MouseOverTaskButtonBackground = Brushes.PowderBlue;
+        private readonly Brush mouseOverTaskButtonBackground = Brushes.PowderBlue;
 
         private Dictionary<string, int> taskButtons = new Dictionary<string, int>
         {
@@ -46,71 +45,72 @@ namespace Hexabell
         };
         #endregion
 
-
         public MainWindow()
         {
             InitializeComponent();
-            InitializeTaskButtons();
 
-            void InitializeTaskButtons()
+            int taskQuantity = 6;
+            viewModel = new ViewModel(taskQuantity);
+            InitializeTaskButtons(taskQuantity);
+
+            void InitializeTaskButtons(int taskQuantity)
             {
-                int tasksQuantity = 6;
-                bellThreads = new Thread[tasksQuantity];
-                IsTaskEnabled = new bool[tasksQuantity];
-                ButtonColors = new Brush[tasksQuantity];
+                ButtonColors = new Brush[taskQuantity];
 
-                for (int i = 0; i < tasksQuantity; i++)
+                for (int i = 0; i < taskQuantity; i++)
                 {
-                    IsTaskEnabled[i] = false;
-                    ButtonColors[i] = DisabledTaskButtonBackground;
+                    ButtonColors[i] = disabledTaskButtonBackground;
                 }
 
-                FirstTaskButton.Background = ButtonColors[0];
-                SecondTaskButton.Background = ButtonColors[1];
-                ThirdTaskButton.Background = ButtonColors[2];
-                FourthTaskButton.Background = ButtonColors[3];
-                FifthTaskButton.Background = ButtonColors[4];
-                SixthTaskButton.Background = ButtonColors[5];
+                SetTaskButtonColor(FirstTaskButton);
+                SetTaskButtonColor(SecondTaskButton);
+                SetTaskButtonColor(ThirdTaskButton);
+                SetTaskButtonColor(FourthTaskButton);
+                SetTaskButtonColor(FifthTaskButton);
+                SetTaskButtonColor(SixthTaskButton);
             }
         }
 
-        private void BasicPolygon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
-
-        private void TaskButton_Click(object sender, RoutedEventArgs e) => ChangeTaskButtonState(sender as Button);
-
-        private void ChangeTaskButtonState(Button taskButton)
+        private int IndexOfTask(Button taskButton)
         {
-            int index = taskButtons[taskButton.Name];
+            return taskButtons[taskButton.Name];
+        }
 
-            IsTaskEnabled[index] = !IsTaskEnabled[index];
+        private void SetTaskButtonColor(Button taskButton)
+        {
+            int index = IndexOfTask(taskButton);
 
             if (IsTaskEnabled[index])
             {
-                StartBellTask(index);
-                ButtonColors[index] = EnabledTaskButtonBackground;
+                ButtonColors[index] = enabledTaskButtonBackground;
             }
             else
             {
-                EndBellTask(index);
-                ButtonColors[index] = DisabledTaskButtonBackground;
+                ButtonColors[index] = disabledTaskButtonBackground;
             }
 
             taskButton.Background = ButtonColors[index];
         }
 
-        private void StartBellTask(int taskIndex)
+        private void ChangeTaskState(Button taskButton)
         {
+            int index = IndexOfTask(taskButton);
 
+            viewModel.ChangeTaskState(index);
+            SetTaskButtonColor(taskButton);
         }
 
-        private void EndBellTask(int taskIndex)
-        {
-
-        }
+        
 
         private bool IsNoError()
         {
             return false;
         }
+
+        #region [ Handlers ]
+        private void BasicPolygon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
+
+        private void TaskButton_Click(object sender, RoutedEventArgs e) => ChangeTaskState(sender as Button);
+        #endregion
     }
 }
