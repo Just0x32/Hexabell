@@ -13,7 +13,10 @@
 
         <Grid Canvas.Left="185" Canvas.Top="213">
             <Polygon x:Name="BasicPolygon" MouseLeftButtonDown="BasicPolygon_MouseLeftButtonDown"
-                     Stretch="Uniform" Fill="AliceBlue" Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
+                     Stretch="Uniform"
+                     Fill="LightGray"
+                     StrokeThickness="3"
+                     Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
 
             <Button Height="20" Width="40"/>
         </Grid>

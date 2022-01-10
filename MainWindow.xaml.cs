@@ -26,13 +26,17 @@ namespace Hexabell
 
         public bool[] IsTaskEnabled { get => viewModel.IsTaskEnabled; }
 
-        public Brush[] ButtonColors { get; private set; }
+        public Brush[] ButtonBackgroundColors { get; private set; }
 
-        private readonly Brush disabledTaskButtonBackground = Brushes.LightSteelBlue;
+        public Brush[] ButtonBorderBrushColors { get; private set; }
 
-        private readonly Brush enabledTaskButtonBackground = Brushes.LightSkyBlue;
+        private readonly Brush disabledTaskButtonBackground = new SolidColorBrush(Color.FromArgb(93, 135, 206, 250));       // LightSkyBlue
 
-        private readonly Brush mouseOverTaskButtonBackground = Brushes.PowderBlue;
+        private readonly Brush disabledTaskButtonBorderBrush = new SolidColorBrush(Color.FromArgb(120, 135, 206, 250));       // LightSkyBlue
+
+        private readonly Brush enabledTaskButtonBackground = new SolidColorBrush(Color.FromArgb(93, 255, 182, 193));        // LightPink
+
+        private readonly Brush enabledTaskButtonBorderBrush = new SolidColorBrush(Color.FromArgb(120, 255, 182, 193));         // LightPink
 
         private Dictionary<string, int> taskButtons = new Dictionary<string, int>
         {
@@ -53,13 +57,18 @@ namespace Hexabell
             viewModel = new ViewModel(taskQuantity);
             InitializeTaskButtons(taskQuantity);
 
+            BasicPolygon.Fill = disabledTaskButtonBackground;
+            BasicPolygon.Stroke = disabledTaskButtonBorderBrush;
+
             void InitializeTaskButtons(int taskQuantity)
             {
-                ButtonColors = new Brush[taskQuantity];
+                ButtonBackgroundColors = new Brush[taskQuantity];
+                ButtonBorderBrushColors = new Brush[taskQuantity];
 
                 for (int i = 0; i < taskQuantity; i++)
                 {
-                    ButtonColors[i] = disabledTaskButtonBackground;
+                    ButtonBackgroundColors[i] = disabledTaskButtonBackground;
+                    ButtonBorderBrushColors[i] = disabledTaskButtonBorderBrush;
                 }
 
                 SetTaskButtonColor(FirstTaskButton);
@@ -82,14 +91,17 @@ namespace Hexabell
 
             if (IsTaskEnabled[index])
             {
-                ButtonColors[index] = enabledTaskButtonBackground;
+                ButtonBackgroundColors[index] = enabledTaskButtonBackground;
+                ButtonBorderBrushColors[index] = enabledTaskButtonBorderBrush;
             }
             else
             {
-                ButtonColors[index] = disabledTaskButtonBackground;
+                ButtonBackgroundColors[index] = disabledTaskButtonBackground;
+                ButtonBorderBrushColors[index] = disabledTaskButtonBorderBrush;
             }
 
-            taskButton.Background = ButtonColors[index];
+            taskButton.Background = ButtonBackgroundColors[index];
+            taskButton.BorderBrush = ButtonBorderBrushColors[index];
         }
 
         private void ChangeTaskState(Button taskButton)

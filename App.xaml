@@ -7,10 +7,13 @@
         <ControlTemplate TargetType="Button" x:Key="HexagonButtonTemplate">
             <Polygon x:Name="HexagonButtonPolygon"
                      Fill="{TemplateBinding Background}"
+                     StrokeThickness="3"
+                     Stroke="{TemplateBinding BorderBrush}"
                      Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter TargetName="HexagonButtonPolygon" Property="Fill" Value="PowderBlue"/>
+                    <Setter TargetName="HexagonButtonPolygon" Property="Stroke" Value="#C887CEFA"/>
+                    <Setter TargetName="HexagonButtonPolygon" Property="StrokeThickness" Value="3"/>
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
