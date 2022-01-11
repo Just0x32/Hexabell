@@ -261,8 +261,12 @@ namespace ExtensionTypes
             {
                 streamReader?.Dispose();
                 streamWriter?.Dispose();
-                isLocked = false;
             }
+
+            File.Delete(path);
+            File.Move(tempPath, path);
+
+            isLocked = false;
         }
 
         private static string ReadValue(string property)
@@ -295,9 +299,9 @@ namespace ExtensionTypes
             finally
             {
                 streamReader?.Dispose();
-                isLocked = false;
             }
 
+            isLocked = false;
             return value;
         }
 
