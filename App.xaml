@@ -9,7 +9,7 @@
                      Fill="{TemplateBinding Background}"
                      StrokeThickness="3"
                      Stroke="{TemplateBinding BorderBrush}"
-                     Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
+                     Points="{Binding ElementName=MainWindowClass, Path=HexagonShape}"/>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter TargetName="HexagonButtonPolygon" Property="Stroke" Value="#C887CEFA"/>
