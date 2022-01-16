@@ -11,17 +11,18 @@
         AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
     <Canvas Background="Transparent">
 
-        <Grid Canvas.Left="185" Canvas.Top="213">
+        <Grid x:Name="BasicPolygonGrid"
+              Canvas.Left="185" Canvas.Top="213">
             <Polygon x:Name="BasicPolygon" MouseLeftButtonDown="BasicPolygon_MouseLeftButtonDown"
-                     Stretch="Uniform"
                      Fill="LightGray"
-                     StrokeThickness="3"
+                     StrokeThickness="{Binding ElementName=MainWindowClass, Path=HexagonStrokeThickness}"
                      Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
 
-            <Button Height="20" Width="40"/>
+            <Button x:Name="BasicPolygonButton"
+                    Height="20" Width="40"/>
         </Grid>
 
-        <Button x:Name="FirstTaskButton" Click="TaskButton_Click"
+        <Button x:Name="FirstTaskButton"
                 Canvas.Left="0" Canvas.Top="107"
                 Template="{DynamicResource HexagonButtonTemplate}"/>
 
