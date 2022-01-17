@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -81,7 +83,7 @@ namespace Hexabell
             {
                 InitializeBasicPolygon();
                 InitializeTaskButtonIndexesAndColors(taskQuantity);
-                HexagonSize = 30;
+                HexagonSize = 70;
                 HexagonInterval = 30;
 
                 void InitializeBasicPolygon()
@@ -110,6 +112,7 @@ namespace Hexabell
 
                         indexFromButton.Add(buttonFromIndex[i], i);
                         SetTaskButtonColor(buttonFromIndex[i]);
+                        buttonFromIndex[i].Content = (i + 1).ToString();
                     }
                 }
             }
@@ -144,16 +147,18 @@ namespace Hexabell
 
         #region [ Changing UI size ]
         private int hexagonSize = 20;
-        private int HexagonSize
+        public int HexagonSize
         {
             get => hexagonSize;
-            set
+            private set
             {
                 if (value != hexagonSize)
                     hexagonSize = ValidValue(value, 20, 70);
 
                 ChangeHexagonPoints(hexagonSize);
                 HexagonInterval = HexagonInterval;
+
+                OnPropertyChanged();
 
                 void ChangeHexagonPoints(int size)
                 {
@@ -192,7 +197,10 @@ namespace Hexabell
                     hexagonInterval = ValidValue(value, 0, 50);
 
                 ChangeHexagonPivots(HexagonSize, hexagonInterval);
-                
+
+                OnPropertyChanged();
+
+
                 void ChangeHexagonPivots(int size, int interval)
                 {
                     int xIndex = basicPolygonGridPosition.XIndex;
@@ -267,6 +275,7 @@ namespace Hexabell
         private void TaskButton_Click(object sender, RoutedEventArgs e)
         {
             ChangeTaskState(sender as Button);
+            HexagonSize -= 10;                                                                                      // Debug
         }
         #endregion
 
@@ -297,5 +306,8 @@ namespace Hexabell
                 }
             }
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
