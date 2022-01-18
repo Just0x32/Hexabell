@@ -11,7 +11,7 @@
                          Fill="{TemplateBinding Background}"
                          StrokeThickness="{Binding ElementName=MainWindowClass, Path=HexagonStrokeThickness}"
                          Stroke="{TemplateBinding BorderBrush}"
-                         Points="{Binding ElementName=MainWindowClass, Path=HexagonPoints, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Points="{Binding ElementName=MainWindowClass, Path=HexagonPoints, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                            Text="{TemplateBinding Content}"
                            FontSize="{Binding ElementName=MainWindowClass, Path=HexagonSize, UpdateSourceTrigger=PropertyChanged}"/>
