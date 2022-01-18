@@ -21,7 +21,7 @@ namespace Hexabell
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
         #region [ Fields and Properties ]
         ViewModel viewModel;
@@ -59,7 +59,7 @@ namespace Hexabell
             new GridPosition(3, 4)
         };
 
-        public PointCollection HexagonPoints { get; private set; } = new PointCollection
+        private PointCollection hexagonPoints = new PointCollection
         {
             { new Point(50, 0) },
             { new Point(150, 0) },
@@ -68,6 +68,15 @@ namespace Hexabell
             { new Point(50, 173) },
             { new Point(0, 87) },
         };
+        public PointCollection HexagonPoints
+        {
+            get => hexagonPoints;
+            private set
+            {
+                hexagonPoints = value;
+                OnPropertyChanged();
+            }
+        }
         #endregion
 
         public MainWindow()
