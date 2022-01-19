@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,6 +78,8 @@ namespace Hexabell
                 OnPropertyChanged();
             }
         }
+
+        public int ForMouseClickTime { get; private set; } = 200;       // From settings
         #endregion
 
         public MainWindow()
@@ -92,8 +95,9 @@ namespace Hexabell
             {
                 InitializeBasicPolygon();
                 InitializeTaskButtonIndexesAndColors(taskQuantity);
-                HexagonSize = 70;
-                HexagonInterval = 30;
+
+                HexagonSize = 50;                                          // From settings
+                HexagonInterval = 20;                                       //
 
                 void InitializeBasicPolygon()
                 {
@@ -121,7 +125,7 @@ namespace Hexabell
 
                         indexFromButton.Add(buttonFromIndex[i], i);
                         SetTaskButtonColor(buttonFromIndex[i]);
-                        buttonFromIndex[i].Content = (i + 1).ToString();
+                        buttonFromIndex[i].Content = (i + 1).ToString() + "0:00";               // Change to real values
                     }
                 }
             }
@@ -154,6 +158,14 @@ namespace Hexabell
             SetTaskButtonColor(taskButton);
         }
 
+        private void ChangeTaskOptions(Button taskButton)
+        {
+            int index = indexFromButton[taskButton];
+
+            MessageBox.Show("ChangeTaskOptions");       // Debug
+            // Make viewModel.ChangeTaskOptions(index)
+        }
+
         #region [ Changing UI size ]
         private int hexagonSize = 20;
         public int HexagonSize
@@ -164,9 +176,9 @@ namespace Hexabell
                 if (value != hexagonSize)
                     hexagonSize = ValidValue(value, 20, 70);
 
-                ChangeHexagonPoints(hexagonSize);
                 HexagonInterval = HexagonInterval;
-
+                ChangeHexagonPoints(hexagonSize);
+                ChangeMainWindowSize(hexagonSize, HexagonInterval);
                 OnPropertyChanged();
 
                 void ChangeHexagonPoints(int size)
@@ -206,9 +218,8 @@ namespace Hexabell
                     hexagonInterval = ValidValue(value, 0, 50);
 
                 ChangeHexagonPivots(HexagonSize, hexagonInterval);
-
+                ChangeMainWindowSize(HexagonSize, hexagonInterval);
                 OnPropertyChanged();
-
 
                 void ChangeHexagonPivots(int size, int interval)
                 {
@@ -271,22 +282,79 @@ namespace Hexabell
 
             return validValue;
         }
+
+        private void ChangeMainWindowSize(int size, int interval)
+        {
+            double mainWindowWidth = 10 * size + 1.73205d * interval;
+            double mainWindowHeight = 20.78472d * size + 2 * interval;
+
+            this.Width = mainWindowWidth;
+            this.Height = mainWindowHeight;
+        }
         #endregion
 
         private bool IsNoError()
         {
-            return false;
+            return false;           // Make viewModel.IsNoError()
         }
 
-        #region [ Handlers ]
-        private void BasicPolygon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
+        #region [ Task Button Click Handler ]
+        private void TaskButtonClickHandler(object sender, int clickCount)
+        {
+            Button button = sender as Button;
 
+            if (clickCount == 1)
+            {
+                ChangeTaskState(button);
+            }
+            else if (clickCount > 1)
+            {
+                ChangeTaskOptions(button);
+            }
+        }
+
+        private delegate void ClickCountHandler(object sender, int clickCount);
+        private int ClickCount { get; set; } = 0;
+        private bool IsClickCounterTimerStarted = false;
         private void TaskButton_Click(object sender, RoutedEventArgs e)
         {
-            ChangeTaskState(sender as Button);
-            HexagonSize -= 10;                                                                                      // Debug
+            ClickCounter();
+
+            void ClickCounter()
+            {
+                if (ClickCount == 0)
+                {
+                    ClickCount += 1;
+                    StartClickCounterTimer();
+                }
+                else if (IsClickCounterTimerStarted)
+                {
+                    ClickCount += 1;
+                }
+
+                void StartClickCounterTimer()
+                {
+                    IsClickCounterTimerStarted = true;
+
+                    Thread thread = new Thread(new ParameterizedThreadStart(StopClickCounterTimerWithDelay));
+                    thread.Start(sender);
+
+                    void StopClickCounterTimerWithDelay(object sender)
+                    {
+                        Thread.Sleep(ForMouseClickTime);
+                        IsClickCounterTimerStarted = false;
+
+                        ClickCountHandler clickCountHandler = new ClickCountHandler(TaskButtonClickHandler);
+                        this.Dispatcher.Invoke(clickCountHandler, new object[] { sender, ClickCount });
+
+                        ClickCount = 0;
+                    }
+                }
+            }
         }
         #endregion
+
+        private void BasicPolygon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => DragMove();
 
         public struct GridPosition
         {
