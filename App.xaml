@@ -12,9 +12,9 @@
                          StrokeThickness="{Binding Path=DataContext.HexagonStrokeThickness, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
                          Stroke="{TemplateBinding BorderBrush}"
                          Points="{Binding Path=DataContext.HexagonPoints, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                <TextBlock HorizontalAlignment="Center"  VerticalAlignment="Center"
                            Text="{TemplateBinding Content}"
-                           FontSize="{Binding Path=DataContext.HexagonSize, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
+                           FontSize="{Binding Path=DataContext.TimeFontSize, RelativeSource={RelativeSource AncestorType={x:Type Window}}, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             
             <ControlTemplate.Triggers>
