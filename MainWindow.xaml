@@ -6,44 +6,65 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Hexabell"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="570"
-        WindowStyle="None" ResizeMode="CanMinimize"
-        AllowsTransparency="True" Background="Transparent">
-    <Canvas Background="Transparent">
+        Title="MainWindow"
+        WindowStyle="None" ResizeMode="CanMinimize" SizeToContent="WidthAndHeight"
+        AllowsTransparency="True" Background="Transparent" WindowStartupLocation="CenterScreen">
+    <Border Width="{Binding Path=WindowWidth}" Height="{Binding Path=WindowHeight}">
+        <Canvas Background="Transparent">
+            <Grid Canvas.Left="{Binding Path=BasicPolygonPivot.X}"
+                  Canvas.Top="{Binding Path=BasicPolygonPivot.Y}">
+                <Polygon x:Name="BasicPolygon" MouseLeftButtonDown="BasicPolygon_MouseLeftButtonDown"
+                     Fill="{Binding Path=BasicPolygonBackground}"
+                     Stroke="{Binding Path=BasicPolygonBorderBrush}"
+                     StrokeThickness="{Binding Path=HexagonStrokeThickness}"
+                     Points="{Binding Path=HexagonPoints}"/>
+                <!--Points="50,0 150,0 200,87 150,173 50,173 0,87"-->
 
-        <Grid x:Name="BasicPolygonGrid"
-              Canvas.Left="185" Canvas.Top="213">
-            <Polygon x:Name="BasicPolygon" MouseLeftButtonDown="BasicPolygon_MouseLeftButtonDown"
-                     Fill="LightGray"
-                     StrokeThickness="{Binding ElementName=MainWindowClass, Path=HexagonStrokeThickness}"
-                     Points="50,0 150,0 200,87 150,173 50,173 0,87"/>
-
-            <Button x:Name="BasicPolygonButton"
+                <Button x:Name="BasicPolygonButton"
                     Height="20" Width="40"/>
-        </Grid>
+            </Grid>
 
-        <Button x:Name="FirstTaskButton" Click="TaskButton_Click"
-                Canvas.Left="0" Canvas.Top="107"
-                Template="{DynamicResource HexagonButtonTemplate}"/>
+            <Button x:Name="FirstTaskButton" Click="TaskButton_Click"
+                Canvas.Left="{Binding Path=TaskButtonPivots[0].X}"
+                Canvas.Top="{Binding Path=TaskButtonPivots[0].Y}"
+                Template="{DynamicResource HexagonButtonTemplate}"
+                Background="{Binding Path=ButtonBackgroundColors[0]}"
+                BorderBrush="{Binding Path=ButtonBorderBrushColors[0]}"/>
 
-        <Button x:Name="SecondTaskButton" Click="TaskButton_Click"
-                Canvas.Left="185" Canvas.Top="0"
-                Template="{DynamicResource HexagonButtonTemplate}"/>
+            <Button x:Name="SecondTaskButton" Click="TaskButton_Click"
+                Canvas.Left="{Binding Path=TaskButtonPivots[1].X}"
+                Canvas.Top="{Binding Path=TaskButtonPivots[1].Y}"
+                Template="{DynamicResource HexagonButtonTemplate}"
+                Background="{Binding Path=ButtonBackgroundColors[1]}"
+                BorderBrush="{Binding Path=ButtonBorderBrushColors[1]}"/>
 
-        <Button x:Name="ThirdTaskButton" Click="TaskButton_Click"
-                Canvas.Left="370" Canvas.Top="107"
-                Template="{DynamicResource HexagonButtonTemplate}"/>
+            <Button x:Name="ThirdTaskButton" Click="TaskButton_Click"
+                Canvas.Left="{Binding Path=TaskButtonPivots[2].X}"
+                Canvas.Top="{Binding Path=TaskButtonPivots[2].Y}"
+                Template="{DynamicResource HexagonButtonTemplate}"
+                Background="{Binding Path=ButtonBackgroundColors[2]}"
+                BorderBrush="{Binding Path=ButtonBorderBrushColors[2]}"/>
 
-        <Button x:Name="FourthTaskButton" Click="TaskButton_Click"
-                Canvas.Left="370" Canvas.Top="320"
-                Template="{DynamicResource HexagonButtonTemplate}"/>
+            <Button x:Name="FourthTaskButton" Click="TaskButton_Click"
+                Canvas.Left="{Binding Path=TaskButtonPivots[3].X}"
+                Canvas.Top="{Binding Path=TaskButtonPivots[3].Y}"
+                Template="{DynamicResource HexagonButtonTemplate}"
+                Background="{Binding Path=ButtonBackgroundColors[3]}"
+                BorderBrush="{Binding Path=ButtonBorderBrushColors[3]}"/>
 
-        <Button x:Name="FifthTaskButton" Click="TaskButton_Click"
-                Canvas.Left="185" Canvas.Top="426"
-                Template="{DynamicResource HexagonButtonTemplate}"/>
+            <Button x:Name="FifthTaskButton" Click="TaskButton_Click"
+                Canvas.Left="{Binding Path=TaskButtonPivots[4].X}"
+                Canvas.Top="{Binding Path=TaskButtonPivots[4].Y}"
+                Template="{DynamicResource HexagonButtonTemplate}"
+                Background="{Binding Path=ButtonBackgroundColors[4]}"
+                BorderBrush="{Binding Path=ButtonBorderBrushColors[4]}"/>
 
-        <Button x:Name="SixthTaskButton" Click="TaskButton_Click"
-                Canvas.Left="0" Canvas.Top="320"
-                Template="{DynamicResource HexagonButtonTemplate}"/>
-    </Canvas>
+            <Button x:Name="SixthTaskButton" Click="TaskButton_Click"
+                Canvas.Left="{Binding Path=TaskButtonPivots[5].X}"
+                Canvas.Top="{Binding Path=TaskButtonPivots[5].Y}"
+                Template="{DynamicResource HexagonButtonTemplate}"
+                Background="{Binding Path=ButtonBackgroundColors[5]}"
+                BorderBrush="{Binding Path=ButtonBorderBrushColors[5]}"/>
+        </Canvas>
+    </Border>
 </Window>
