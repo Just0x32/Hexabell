@@ -51,7 +51,6 @@ namespace Hexabell
                 for (int i = 0; i < taskQuantity; i++)
                 {
                     indexFromButton.Add(buttonFromIndex[i], i);
-                    buttonFromIndex[i].Content = (i + 1).ToString() + "0:00";               // Change to real values
                 }
             }
         }
@@ -61,17 +60,14 @@ namespace Hexabell
             int index = indexFromButton[taskButton];
 
             viewModel.ChangeTaskState(index);
-            //SetTaskButtonColor(taskButton);
-
-            viewModel.HexagonSize += 5;                   // Debug
         }
 
         private void ChangeTaskOptions(Button taskButton)
         {
             int index = indexFromButton[taskButton];
 
-            MessageBox.Show("ChangeTaskOptions");       // Debug
-            viewModel.HexagonSize -= 5;                           //
+            MessageBox.Show("ChangeTaskOptions for " + taskButton.Name);       // Debug
+
             // Make viewModel.ChangeTaskOptions(index)
         }
 
@@ -85,14 +81,13 @@ namespace Hexabell
         {
             Button button = sender as Button;
 
-            if (clickCount == 1)
+            if (clickCount > 1)
             {
-                ChangeTaskState(button);
-            }
-            else if (clickCount > 1)
-            {
+                CancelTaskStateChanging(button);
                 ChangeTaskOptions(button);
             }
+
+            void CancelTaskStateChanging(Button button) => ChangeTaskState(button);
         }
 
         private delegate void ClickCountHandler(object sender, int clickCount);
@@ -107,12 +102,15 @@ namespace Hexabell
                 if (ClickCount == 0)
                 {
                     ClickCount += 1;
+                    PreStartTask();
                     StartClickCounterTimer();
                 }
                 else if (IsClickCounterTimerStarted)
                 {
                     ClickCount += 1;
                 }
+
+                void PreStartTask() => ChangeTaskState(sender as Button);
 
                 void StartClickCounterTimer()
                 {
