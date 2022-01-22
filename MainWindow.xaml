@@ -14,57 +14,63 @@
             <Grid Canvas.Left="{Binding Path=BasicPolygonPivot.X}"
                   Canvas.Top="{Binding Path=BasicPolygonPivot.Y}">
                 <Polygon x:Name="BasicPolygon" MouseLeftButtonDown="BasicPolygon_MouseLeftButtonDown"
-                     Fill="{Binding Path=BasicPolygonBackground}"
-                     Stroke="{Binding Path=BasicPolygonBorderBrush}"
-                     StrokeThickness="{Binding Path=HexagonStrokeThickness}"
-                     Points="{Binding Path=HexagonPoints}"/>
+                        Fill="{Binding Path=BasicPolygonBackground}"
+                        Stroke="{Binding Path=BasicPolygonBorderBrush}"
+                        StrokeThickness="{Binding Path=HexagonStrokeThickness}"
+                        Points="{Binding Path=HexagonPoints}"/>
                 <!--Points="50,0 150,0 200,87 150,173 50,173 0,87"-->
 
                 <Button x:Name="BasicPolygonButton"
-                    Height="20" Width="40"/>
+                        Height="20" Width="40"/>
             </Grid>
 
             <Button x:Name="FirstTaskButton" Click="TaskButton_Click"
-                Canvas.Left="{Binding Path=TaskButtonPivots[0].X}"
-                Canvas.Top="{Binding Path=TaskButtonPivots[0].Y}"
-                Template="{DynamicResource HexagonButtonTemplate}"
-                Background="{Binding Path=ButtonBackgroundColors[0]}"
-                BorderBrush="{Binding Path=ButtonBorderBrushColors[0]}"/>
+                    Canvas.Left="{Binding Path=TaskButtonPivots[0].X}"
+                    Canvas.Top="{Binding Path=TaskButtonPivots[0].Y}"
+                    Template="{DynamicResource HexagonButtonTemplate}"
+                    Background="{Binding Path=ButtonBackgroundColors[0]}"
+                    BorderBrush="{Binding Path=ButtonBorderBrushColors[0]}"
+                    Content="{Binding Path=TaskTimes[0]}"/>
 
             <Button x:Name="SecondTaskButton" Click="TaskButton_Click"
-                Canvas.Left="{Binding Path=TaskButtonPivots[1].X}"
-                Canvas.Top="{Binding Path=TaskButtonPivots[1].Y}"
-                Template="{DynamicResource HexagonButtonTemplate}"
-                Background="{Binding Path=ButtonBackgroundColors[1]}"
-                BorderBrush="{Binding Path=ButtonBorderBrushColors[1]}"/>
+                    Canvas.Left="{Binding Path=TaskButtonPivots[1].X}"
+                    Canvas.Top="{Binding Path=TaskButtonPivots[1].Y}"
+                    Template="{DynamicResource HexagonButtonTemplate}"
+                    Background="{Binding Path=ButtonBackgroundColors[1]}"
+                    BorderBrush="{Binding Path=ButtonBorderBrushColors[1]}"
+                    Content="{Binding Path=TaskTimes[1]}"/>
 
             <Button x:Name="ThirdTaskButton" Click="TaskButton_Click"
-                Canvas.Left="{Binding Path=TaskButtonPivots[2].X}"
-                Canvas.Top="{Binding Path=TaskButtonPivots[2].Y}"
-                Template="{DynamicResource HexagonButtonTemplate}"
-                Background="{Binding Path=ButtonBackgroundColors[2]}"
-                BorderBrush="{Binding Path=ButtonBorderBrushColors[2]}"/>
+                    Canvas.Left="{Binding Path=TaskButtonPivots[2].X}"
+                    Canvas.Top="{Binding Path=TaskButtonPivots[2].Y}"
+                    Template="{DynamicResource HexagonButtonTemplate}"
+                    Background="{Binding Path=ButtonBackgroundColors[2]}"
+                    BorderBrush="{Binding Path=ButtonBorderBrushColors[2]}"
+                    Content="{Binding Path=TaskTimes[2]}"/>
 
             <Button x:Name="FourthTaskButton" Click="TaskButton_Click"
-                Canvas.Left="{Binding Path=TaskButtonPivots[3].X}"
-                Canvas.Top="{Binding Path=TaskButtonPivots[3].Y}"
-                Template="{DynamicResource HexagonButtonTemplate}"
-                Background="{Binding Path=ButtonBackgroundColors[3]}"
-                BorderBrush="{Binding Path=ButtonBorderBrushColors[3]}"/>
+                    Canvas.Left="{Binding Path=TaskButtonPivots[3].X}"
+                    Canvas.Top="{Binding Path=TaskButtonPivots[3].Y}"
+                    Template="{DynamicResource HexagonButtonTemplate}"
+                    Background="{Binding Path=ButtonBackgroundColors[3]}"
+                    BorderBrush="{Binding Path=ButtonBorderBrushColors[3]}"
+                    Content="{Binding Path=TaskTimes[3]}"/>
 
             <Button x:Name="FifthTaskButton" Click="TaskButton_Click"
-                Canvas.Left="{Binding Path=TaskButtonPivots[4].X}"
-                Canvas.Top="{Binding Path=TaskButtonPivots[4].Y}"
-                Template="{DynamicResource HexagonButtonTemplate}"
-                Background="{Binding Path=ButtonBackgroundColors[4]}"
-                BorderBrush="{Binding Path=ButtonBorderBrushColors[4]}"/>
+                    Canvas.Left="{Binding Path=TaskButtonPivots[4].X}"
+                    Canvas.Top="{Binding Path=TaskButtonPivots[4].Y}"
+                    Template="{DynamicResource HexagonButtonTemplate}"
+                    Background="{Binding Path=ButtonBackgroundColors[4]}"
+                    BorderBrush="{Binding Path=ButtonBorderBrushColors[4]}"
+                    Content="{Binding Path=TaskTimes[4]}"/>
 
             <Button x:Name="SixthTaskButton" Click="TaskButton_Click"
-                Canvas.Left="{Binding Path=TaskButtonPivots[5].X}"
-                Canvas.Top="{Binding Path=TaskButtonPivots[5].Y}"
-                Template="{DynamicResource HexagonButtonTemplate}"
-                Background="{Binding Path=ButtonBackgroundColors[5]}"
-                BorderBrush="{Binding Path=ButtonBorderBrushColors[5]}"/>
+                    Canvas.Left="{Binding Path=TaskButtonPivots[5].X}"
+                    Canvas.Top="{Binding Path=TaskButtonPivots[5].Y}"
+                    Template="{DynamicResource HexagonButtonTemplate}"
+                    Background="{Binding Path=ButtonBackgroundColors[5]}"
+                    BorderBrush="{Binding Path=ButtonBorderBrushColors[5]}"
+                    Content="{Binding Path=TaskTimes[5]}"/>
         </Canvas>
     </Border>
 </Window>
