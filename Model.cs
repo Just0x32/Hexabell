@@ -14,8 +14,22 @@ namespace Hexabell
     public class Model : INotifyPropertyChanged
     {
         private readonly int taskQuantity;
+        private readonly string defaultTaskHour = "00";
+        private readonly string defaultTaskMinute = "00";
+        private readonly char defaultTimeSeparator = ':';
 
-        private Thread[] bellThreads;
+        private string[] taskTimes;
+        public string[] TaskTimes
+        {
+            get => taskTimes;
+            private set
+            {
+                if (taskTimes != value)
+                    taskTimes = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         private bool[] isTaskEnabled;
         public bool[] IsTaskEnabled
@@ -30,6 +44,8 @@ namespace Hexabell
             }
         }
 
+        private Thread[] bellThreads;
+
         public Model(int taskQuantity)
         {
             this.taskQuantity = taskQuantity;
@@ -38,10 +54,14 @@ namespace Hexabell
             void InitializeTaskArrays()
             {
                 IsTaskEnabled = new bool[taskQuantity];
+                TaskTimes = new string[taskQuantity];
                 bellThreads = new Thread[taskQuantity];
 
                 for (int i = 0; i < taskQuantity; i++)
+                {
                     IsTaskEnabled[i] = false;
+                    TaskTimes[i] = defaultTaskHour + defaultTimeSeparator + defaultTaskMinute;
+                }
             }
         }
 
@@ -51,6 +71,30 @@ namespace Hexabell
             TaskStateChangedNotify();
 
             void TaskStateChangedNotify() => IsTaskEnabled = IsTaskEnabled;
+        }
+
+        public void SetTaskTime(int taskIndex, string inputTaskTime)
+        {
+            if (!string.IsNullOrEmpty(inputTaskTime))
+            {
+                if (inputTaskTime.Length == 4)
+                    inputTaskTime = "0" + inputTaskTime;
+
+                if (inputTaskTime.Length == 5)
+                {
+                    int minutes;
+                    int hours;
+
+                    if (int.TryParse(inputTaskTime[0..1], out hours) && inputTaskTime[2] == defaultTimeSeparator && int.TryParse(inputTaskTime[3..4], out minutes))
+                    {
+                        if (hours < 24 && minutes < 60)
+                        {
+                            TaskTimes[taskIndex] = inputTaskTime;
+                            TaskTimes = TaskTimes;
+                        }
+                    }
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

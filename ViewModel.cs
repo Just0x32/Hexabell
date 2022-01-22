@@ -51,6 +51,7 @@ namespace Hexabell
         public Brush IsMouseOverTaskButtonBorderBrush { get; } = new SolidColorBrush(Color.FromArgb(200, 135, 206, 250));         // LightSkyBlue
         public Brush BasicPolygonBackground { get; } = new SolidColorBrush(Color.FromArgb(93, 135, 206, 250));       // LightSkyBlue
         public Brush BasicPolygonBorderBrush { get; } = new SolidColorBrush(Color.FromArgb(120, 135, 206, 250));       // LightSkyBlue
+        public Brush TimeFontColor { get; } = new SolidColorBrush(Color.FromArgb(255, 60, 60, 60));       // DimGray
         #endregion
 
         #region [ Hexagon Shape and Location ]
@@ -318,6 +319,8 @@ namespace Hexabell
 
         public bool[] IsTaskEnabled { get => model.IsTaskEnabled; }
 
+        public string[] TaskTimes { get => model.TaskTimes; private set => OnPropertyChanged(); }
+
         public ViewModel(int taskQuantity)
         {
             this.taskQuantity = taskQuantity;
@@ -334,14 +337,20 @@ namespace Hexabell
             {
                 ButtonBackgroundColors = new Brush[taskQuantity];
                 ButtonBorderBrushColors = new Brush[taskQuantity];
-                SetTaskButtonColor();
+                SetTaskButtonColors();
             }
 
             void LoadSettings()                 // From settings
             {
-                HexagonSize = 10;
+                HexagonSize = 50;
                 HexagonInterval = 20;
                 TimeFontSizeScale = 0.9;
+
+                for (int i = 0; i < taskQuantity; i++)
+                {
+                    SetTaskTime(i, $"0{i + 1}:0{i + 1}");
+                }
+                
             }
         }
 
@@ -349,11 +358,25 @@ namespace Hexabell
 
         private void ModelNotify(object sender, PropertyChangedEventArgs e)
         {
+            switch (e.PropertyName)
+            {
+                case nameof(model.IsTaskEnabled):
+                    SetTaskButtonColors();
+                    break;
+                case nameof(model.TaskTimes):
+                    TaskTimes = TaskTimes;
+                    break;
+            }
+
             if (e.PropertyName == nameof(model.IsTaskEnabled))
-                SetTaskButtonColor();
+            {
+                SetTaskButtonColors();
+            }
+                
+
         }
 
-        private void SetTaskButtonColor()
+        private void SetTaskButtonColors()
         {
             for (int i = 0; i < taskQuantity; i++)
             {
@@ -393,6 +416,8 @@ namespace Hexabell
                 ButtonBorderBrushColors = ButtonBorderBrushColors;
             }
         }
+
+        private void SetTaskTime(int taskIndex, string inputTaskTime) => model.SetTaskTime(taskIndex, inputTaskTime);
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
