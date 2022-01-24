@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using IOExtension;
 
 namespace Hexabell
 {
@@ -321,6 +323,8 @@ namespace Hexabell
 
         public string[] TaskTimes { get => model.TaskTimes; private set => OnPropertyChanged(); }
 
+        public string IsDefaultSettings { get => TryWriteDefaultSettings().ToString(); }      // Debug
+
         public ViewModel(int taskQuantity)
         {
             this.taskQuantity = taskQuantity;
@@ -350,7 +354,50 @@ namespace Hexabell
                 {
                     SetTaskTime(i, $"0{i + 1}:0{i + 1}");
                 }
-                
+            }
+        }
+
+        private bool TryWriteDefaultSettings()
+        {
+            SettingsFile.TryDeleteSettingsFile();
+            SettingsFile.SettingsFilePath = "settings.txt";
+
+            if (SettingsFile.IsSettingsFileAvailable(true))
+            {
+                List<string[]> propertyValuePairs = new List<string[]>();
+                propertyValuePairs.Add(new string[] { nameof(HexagonSize), HexagonSize.ToString() });
+                propertyValuePairs.Add(new string[] { nameof(HexagonInterval), HexagonInterval.ToString() });
+                propertyValuePairs.Add(new string[] { nameof(TimeFontSizeScale), string.Format(new CultureInfo("en-US"), "{0:f1}", TimeFontSizeScale) });
+                for (int i = 0; i < taskQuantity; i++)
+                    propertyValuePairs.Add(new string[] { nameof(TaskTimes)[..^1] + $"{i + 1}", TaskTimes[i] });
+
+                for (int i = 0; i < propertyValuePairs.Count; i++)
+                {
+                    bool isWritingSuccessful = TryWritePropertyValuePair(propertyValuePairs[i][0], propertyValuePairs[i][1]);
+
+                    if (!isWritingSuccessful)
+                        return false;
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+            bool TryWritePropertyValuePair(string property, string value)
+            {
+                SettingsFile.SetPropertyValue(property, value);
+
+                if (SettingsFile.GetPropertyValue(property) == value)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
         }
 
@@ -372,8 +419,6 @@ namespace Hexabell
             {
                 SetTaskButtonColors();
             }
-                
-
         }
 
         private void SetTaskButtonColors()
