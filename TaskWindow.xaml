@@ -1,0 +1,92 @@
+﻿<Window x:Class="Hexabell.TaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Hexabell"
+        mc:Ignorable="d"
+        Title="TaskWindow"
+        WindowStyle="ToolWindow" ResizeMode="NoResize" Height="200" Width="300" SizeToContent="WidthAndHeight">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0"
+                   VerticalAlignment="Center" HorizontalAlignment="Center"
+                   Text="{Binding Path=DataContext.Time}"/>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox x:Name="HourListBox" Grid.Column="0"
+                 ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.PanningRatio="0.01"
+                 Height="{Binding ElementName=SeparatorTextBlock, Path=ActualHeight}" Width="80" Margin="5">
+                <ListBoxItem>
+                    <TextBlock Text="11"/>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock Text="12"/>
+                </ListBoxItem>
+                <ListBoxItem>
+                    <TextBlock Text="13"/>
+                </ListBoxItem>
+            </ListBox>
+
+            <TextBlock x:Name="SeparatorTextBlock" Grid.Column="1"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
+                       Height="20"
+                       Text=":" />
+
+            <ComboBox x:Name="MinuteComboBox" Grid.Column="2"
+                      Height="20" Width="80" Margin="5" MaxDropDownHeight="50">
+                
+
+                <ComboBoxItem>
+                    <TextBlock Text="01"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="02"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="03"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="04"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="05"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <TextBlock Text="06"/>
+                </ComboBoxItem>
+            </ComboBox>
+        </Grid>
+        
+        
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <Button Grid.Column="0" Grid.Row="1"
+                IsDefault="True" Click="Accept_Click"
+                Content="Ok"
+                Height="30" Width="80"/>
+            <Button Grid.Column="1" Grid.Row="1"
+                IsCancel="True"
+                Content="Cancel"
+                Height="30" Width="80"/>
+        </Grid>
+                 
+        
+
+    </Grid>
+</Window>
