@@ -66,9 +66,12 @@ namespace Hexabell
         {
             int index = indexFromButton[taskButton];
 
-            MessageBox.Show("ChangeTaskOptions for " + taskButton.Name);       // Debug
-
-            // Make viewModel.ChangeTaskOptions(index)
+            TaskWindow taskWindow = new TaskWindow(taskButton);
+            if (taskWindow.ShowDialog() == true)
+            {
+                // Send time to ViewModel
+                // Send other options to ViewModel
+            }
         }
 
         private bool IsNoError()
