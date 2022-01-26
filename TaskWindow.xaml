@@ -6,69 +6,33 @@
         xmlns:local="clr-namespace:Hexabell"
         mc:Ignorable="d"
         Title="TaskWindow"
-        WindowStyle="ToolWindow" ResizeMode="NoResize" Height="200" Width="300" SizeToContent="WidthAndHeight">
+        WindowStyle="ToolWindow" ResizeMode="NoResize" Height="200" Width="300" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0"
-                   VerticalAlignment="Center" HorizontalAlignment="Center"
-                   Text="{Binding Path=DataContext.Time}"/>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <GroupBox Grid.Row="0" Header="Time" Margin="5">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
 
-            <ListBox x:Name="HourListBox" Grid.Column="0"
-                 ScrollViewer.VerticalScrollBarVisibility="Hidden" ScrollViewer.PanningRatio="0.01"
-                 Height="{Binding ElementName=SeparatorTextBlock, Path=ActualHeight}" Width="80" Margin="5">
-                <ListBoxItem>
-                    <TextBlock Text="11"/>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <TextBlock Text="12"/>
-                </ListBoxItem>
-                <ListBoxItem>
-                    <TextBlock Text="13"/>
-                </ListBoxItem>
-            </ListBox>
+                <ComboBox x:Name="HoursComboBox" Grid.Column="0"
+                      Height="20" Width="80" Margin="5" MaxDropDownHeight="100"/>
 
-            <TextBlock x:Name="SeparatorTextBlock" Grid.Column="1"
+                <TextBlock x:Name="SeparatorTextBlock" Grid.Column="1"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
-                       Height="20"
-                       Text=":" />
+                       Height="20" />
 
-            <ComboBox x:Name="MinuteComboBox" Grid.Column="2"
-                      Height="20" Width="80" Margin="5" MaxDropDownHeight="50">
-                
-
-                <ComboBoxItem>
-                    <TextBlock Text="01"/>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock Text="02"/>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock Text="03"/>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock Text="04"/>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock Text="05"/>
-                </ComboBoxItem>
-                <ComboBoxItem>
-                    <TextBlock Text="06"/>
-                </ComboBoxItem>
-            </ComboBox>
-        </Grid>
-        
-        
+                <ComboBox x:Name="MinutesComboBox" Grid.Column="2"
+                      Height="20" Width="80" Margin="5" MaxDropDownHeight="100"/>
+            </Grid>
+        </GroupBox>
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -79,14 +43,12 @@
             <Button Grid.Column="0" Grid.Row="1"
                 IsDefault="True" Click="Accept_Click"
                 Content="Ok"
-                Height="30" Width="80"/>
+                Height="30" Width="80" Margin="5"/>
             <Button Grid.Column="1" Grid.Row="1"
                 IsCancel="True"
                 Content="Cancel"
-                Height="30" Width="80"/>
+                Height="30" Width="80" Margin="5"/>
         </Grid>
-                 
         
-
     </Grid>
 </Window>

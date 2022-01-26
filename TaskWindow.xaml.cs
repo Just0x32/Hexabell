@@ -19,24 +19,62 @@ namespace Hexabell
     /// </summary>
     public partial class TaskWindow : Window
     {
+        private List<string> minutes = new List<string>();
+        private List<string> hours = new List<string>();
+        private string separator;
+
         public string Time { get; private set; }
 
         public TaskWindow(Button taskButton)
         {
             InitializeComponent();
             DataContext = this;
-            Time = taskButton.Content.ToString();
-            MessageBox.Show(Time);
+
+            GetInputTime();
+
+            void GetInputTime()
+            {
+                InitializeHoursComboBox(taskButton.Content.ToString()[..2]);
+                InitializeMinutesComboBox(taskButton.Content.ToString()[^2..]);
+                InitializeSeparator(taskButton.Content.ToString()[2].ToString());
+            }
+        }
+
+        private void InitializeHoursComboBox(string inputHours)
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                hours.Add(string.Format("{0:d2}", i));
+            }
+
+            HoursComboBox.ItemsSource = hours;
+            HoursComboBox.SelectedValue = inputHours;
+        }
+
+        private void InitializeMinutesComboBox(string inputMinutes)
+        {
+            for (int i = 0; i < 60; i++)
+            {
+                minutes.Add(string.Format("{0:d2}", i));
+            }
+
+            MinutesComboBox.ItemsSource = minutes;
+            MinutesComboBox.SelectedValue = inputMinutes;
+        }
+
+        private void InitializeSeparator(string inputSeparator)
+        {
+            separator = inputSeparator;
+            SeparatorTextBlock.Text = separator;
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            this.DialogResult = true;
-        }
+            string outputHours = HoursComboBox.SelectedValue as string;
+            string outputMinutes = MinutesComboBox.SelectedValue as string;
+            Time = outputHours + separator + outputMinutes;
 
-        private void TimeButton_Click(object sender, RoutedEventArgs e)
-        {
-            DatePicker datePicker = new DatePicker();
+            this.DialogResult = true;
         }
     }
 }
