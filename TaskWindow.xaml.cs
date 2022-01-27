@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,13 +25,15 @@ namespace Hexabell
         private string separator;
 
         public string Time { get; private set; }
+        public string SoundPath { get; private set; }
 
-        public TaskWindow(Button taskButton)
+        public TaskWindow(Button taskButton, string inputSoundPath)
         {
             InitializeComponent();
             DataContext = this;
 
             GetInputTime();
+            GetInputSoundPath();
 
             void GetInputTime()
             {
@@ -38,6 +41,7 @@ namespace Hexabell
                 InitializeMinutesComboBox(taskButton.Content.ToString()[^2..]);
                 InitializeSeparator(taskButton.Content.ToString()[2].ToString());
             }
+            void GetInputSoundPath() => SoundPath = inputSoundPath;
         }
 
         private void InitializeHoursComboBox(string inputHours)
@@ -75,6 +79,20 @@ namespace Hexabell
             Time = outputHours + separator + outputMinutes;
 
             this.DialogResult = true;
+        }
+
+        private void ChangeSoundPath_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "MP3 files (*.mp3)|*.mp3";
+            openFileDialog.Multiselect = false;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                SoundPath = openFileDialog.FileName;
+                // Update TextBox
+            }
+                
         }
     }
 }

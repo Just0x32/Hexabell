@@ -34,6 +34,25 @@
             </Grid>
         </GroupBox>
 
+        <GroupBox Grid.Row="1" Header="Sound">
+            <Grid >
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+
+                <TextBox IsReadOnly="True" Text="{Binding Path=DataContext.SoundPath, Mode=OneWay}" Height="30" Width="110" Margin="5"/>
+
+                <Button Grid.Column="1" Click="ChangeSoundPath_Click"
+                Content="Change"
+                Height="30" Width="50" Margin="5"/>
+            </Grid>
+        </GroupBox>
+        
+        
+        
+        
+
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
