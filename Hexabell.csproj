@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <None Remove="Extension\IOExtension.dll" />
-    <None Remove="IOExtension.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Extension\IOExtension.dll" />
   </ItemGroup>
 
   <ItemGroup>
@@ -16,11 +19,4 @@
       <HintPath>Extension\IOExtension.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="Extension\IOExtension.dll">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Resource>
-  </ItemGroup>
-
 </Project>
