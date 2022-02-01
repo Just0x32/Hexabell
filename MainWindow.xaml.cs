@@ -65,11 +65,16 @@ namespace Hexabell
         private void ChangeTaskOptions(Button taskButton)
         {
             int index = indexFromButton[taskButton];
-            string soundPath = "D:";        // GetFromViewModel
+            string soundPath = viewModel.SoundPaths[index];
+            string time = viewModel.TaskTimes[index];
 
-            TaskWindow taskWindow = new TaskWindow(taskButton, soundPath);
+            TaskWindow taskWindow = new TaskWindow(time, soundPath);
+            taskWindow.Owner = this;
+
             if (taskWindow.ShowDialog() == true)
             {
+                MessageBox.Show(taskWindow.Hours + ":" + taskWindow.Minutes + Environment.NewLine + taskWindow.SoundPath);   // Debug
+
                 // Send time to ViewModel
                 // Send other options to ViewModel
             }
