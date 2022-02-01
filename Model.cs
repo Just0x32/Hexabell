@@ -31,6 +31,19 @@ namespace Hexabell
             }
         }
 
+        private string[] soundPaths;
+        public string[] SoundPaths
+        {
+            get => soundPaths;
+            private set
+            {
+                if (soundPaths != value)
+                    soundPaths = value;
+
+                OnPropertyChanged();
+            }
+        }
+
         private bool[] isTaskEnabled;
         public bool[] IsTaskEnabled
         {
@@ -55,6 +68,7 @@ namespace Hexabell
             {
                 IsTaskEnabled = new bool[taskQuantity];
                 TaskTimes = new string[taskQuantity];
+                SoundPaths = new string[taskQuantity];
                 bellThreads = new Thread[taskQuantity];
 
                 for (int i = 0; i < taskQuantity; i++)
@@ -75,26 +89,42 @@ namespace Hexabell
 
         public void SetTaskTime(int taskIndex, string inputTaskTime)
         {
-            if (!string.IsNullOrEmpty(inputTaskTime))
+            if (AreValidValues())
             {
-                if (inputTaskTime.Length == 4)
-                    inputTaskTime = "0" + inputTaskTime;
+                TaskTimes[taskIndex] = inputTaskTime;
+                TaskTimes = TaskTimes;
+            }
 
-                if (inputTaskTime.Length == 5)
+            bool AreValidValues()
+            {
+                if (!string.IsNullOrEmpty(inputTaskTime))
                 {
-                    int minutes;
-                    int hours;
+                    if (inputTaskTime.Length == 4)
+                        inputTaskTime = "0" + inputTaskTime;
 
-                    if (int.TryParse(inputTaskTime[0..1], out hours) && inputTaskTime[2] == defaultTimeSeparator && int.TryParse(inputTaskTime[3..4], out minutes))
+                    if (inputTaskTime.Length == 5)
                     {
-                        if (hours < 24 && minutes < 60)
+                        int minutes;
+                        int hours;
+
+                        if (int.TryParse(inputTaskTime[0..1], out hours) && inputTaskTime[2] == defaultTimeSeparator && int.TryParse(inputTaskTime[3..4], out minutes))
                         {
-                            TaskTimes[taskIndex] = inputTaskTime;
-                            TaskTimes = TaskTimes;
+                            if (hours < 24 && minutes < 60)
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
+
+                return false;
             }
+        }
+
+        public void SetSoundPath(int taskIndex, string soundPath)
+        {
+            SoundPaths[taskIndex] = soundPath;
+            SoundPaths = SoundPaths;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
