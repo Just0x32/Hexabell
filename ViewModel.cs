@@ -15,7 +15,7 @@ namespace Hexabell
     public class ViewModel : INotifyPropertyChanged
     {
         private Model model;
-        private readonly int taskQuantity;
+        private static readonly int taskQuantity = 6;
 
         #region [ Hexagon Design Properties ]
         public double HexagonStrokeThickness { get; private set; } = 3;
@@ -109,12 +109,12 @@ namespace Hexabell
         public GridPosition BasicPolygonGridPosition { get; private set; } = new GridPosition(2, 3);
         public GridPosition[] TaskButtonGridPositions { get; private set; } = new GridPosition[]
         {
-            new GridPosition(2, 5),
-            new GridPosition(1, 4),
-            new GridPosition(1, 2),
             new GridPosition(2, 1),
-            new GridPosition(3, 2),
-            new GridPosition(3, 4)
+            new GridPosition(1, 2),
+            new GridPosition(1, 4),
+            new GridPosition(2, 5),
+            new GridPosition(3, 4),
+            new GridPosition(3, 2)
         };
         #endregion
 
@@ -187,7 +187,7 @@ namespace Hexabell
                     int yIndex = BasicPolygonGridPosition.YIndex;
                     BasicPolygonPivot = new Point(XOffset(xIndex), YOffset(yIndex));
 
-                    Point[] pivots = new Point[TaskButtonPivots.Length];
+                    Point[] pivots = new Point[taskQuantity];
                     for (int i = 0; i < pivots.Length; i++)
                     {
                         xIndex = TaskButtonGridPositions[i].XIndex;
@@ -322,42 +322,57 @@ namespace Hexabell
         public List<string> ValidHours { get; private set; }
         public List<string> ValidMinutes { get; private set; }
         public string ValidSeparator { get; private set; }
-
         public string[] SoundPaths { get => model.SoundPaths; }
-
         public bool[] IsTaskEnabled { get => model.IsTaskEnabled; }
 
-        public string[] TaskTimes { get => model.TaskTimes; private set => OnPropertyChanged(); }
+        private string[] taskTimes;
+        public string[] TaskTimes
+        {
+            get => taskTimes;
+            private set
+            {
+                if (taskTimes != value)
+                    taskTimes = value;
+
+                OnPropertyChanged();
+            }
+        }
 
         public string IsDefaultSettings { get => TryWriteDefaultSettings().ToString(); }      // Debug
 
-        public ViewModel(int taskQuantity)
+        public ViewModel()
         {
-            this.taskQuantity = taskQuantity;
             model = new Model(taskQuantity);
             model.PropertyChanged += ModelNotify;
 
-            ValidHours = GetIncrementedValues(23);
-            ValidMinutes = GetIncrementedValues(59);
-            ValidSeparator = ":";
-
+            InitializeTime();
             InitializeSizes();
-            InitializeTaskButtonIndexesAndColors();
+            InitializeColors();
+
             LoadSettings();
 
-            List<string> GetIncrementedValues(int maxValue)
+            void InitializeTime()
             {
-                List<string> list = new List<string>();
+                TaskTimes = new string[taskQuantity];
 
-                for (int i = 0; i <= maxValue; i++)
-                    list.Add(string.Format("{0:d2}", i));
+                ValidHours = GetIncrementedValues(23);
+                ValidMinutes = GetIncrementedValues(59);
+                ValidSeparator = ":";
 
-                return list;
+                List<string> GetIncrementedValues(int maxValue)
+                {
+                    List<string> list = new List<string>();
+
+                    for (int i = 0; i <= maxValue; i++)
+                        list.Add(string.Format("{0:d2}", i));
+
+                    return list;
+                }
             }
 
             void InitializeSizes() => HexagonSize = HexagonSize;
 
-            void InitializeTaskButtonIndexesAndColors()
+            void InitializeColors()
             {
                 ButtonBackgroundColors = new Brush[taskQuantity];
                 ButtonBorderBrushColors = new Brush[taskQuantity];
@@ -371,10 +386,10 @@ namespace Hexabell
                 TimeFontSizeScale = 0.9;
 
                 for (int i = 0; i < taskQuantity; i++)
-                    SetTaskTime(i, $"0{i + 1}:0{i + 1}");
+                    SetTaskTime(i, i + 1, i + 1);
 
                 for (int i = 0; i < taskQuantity; i++)
-                    SetSoundPath(i, $"D:");
+                    SetSoundPath(i, @"D:\music.mp3");
             }
         }
 
@@ -426,19 +441,18 @@ namespace Hexabell
 
         private void ModelNotify(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
-            {
-                case nameof(model.IsTaskEnabled):
-                    SetTaskButtonColors();
-                    break;
-                case nameof(model.TaskTimes):
-                    TaskTimes = TaskTimes;
-                    break;
-            }
+            if (e.PropertyName == nameof(model.TaskTimes))
+                SetTaskTimes();
 
             if (e.PropertyName == nameof(model.IsTaskEnabled))
-            {
                 SetTaskButtonColors();
+
+            void SetTaskTimes()
+            {
+                for (int i = 0; i < taskQuantity; i++)
+                    TaskTimes[i] = string.Format("{0:d2}", ValidHours[model.Hours[i]]) + ValidSeparator + string.Format("{0:d2}", ValidMinutes[model.Minutes[i]]);
+
+                TaskTimes = TaskTimes;
             }
         }
 
@@ -483,7 +497,7 @@ namespace Hexabell
             }
         }
 
-        private void SetTaskTime(int taskIndex, string inputTaskTime) => model.SetTaskTime(taskIndex, inputTaskTime);
+        private void SetTaskTime(int taskIndex, int hour, int minute) => model.SetTaskTime(taskIndex, hour, minute);
 
         private void SetSoundPath(int taskIndex, string soundPath) => model.SetSoundPath(taskIndex, soundPath);
 
