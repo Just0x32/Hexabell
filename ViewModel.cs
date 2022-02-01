@@ -319,6 +319,12 @@ namespace Hexabell
         }
         #endregion
 
+        public List<string> ValidHours { get; private set; }
+        public List<string> ValidMinutes { get; private set; }
+        public string ValidSeparator { get; private set; }
+
+        public string[] SoundPaths { get => model.SoundPaths; }
+
         public bool[] IsTaskEnabled { get => model.IsTaskEnabled; }
 
         public string[] TaskTimes { get => model.TaskTimes; private set => OnPropertyChanged(); }
@@ -331,9 +337,23 @@ namespace Hexabell
             model = new Model(taskQuantity);
             model.PropertyChanged += ModelNotify;
 
+            ValidHours = GetIncrementedValues(23);
+            ValidMinutes = GetIncrementedValues(59);
+            ValidSeparator = ":";
+
             InitializeSizes();
             InitializeTaskButtonIndexesAndColors();
             LoadSettings();
+
+            List<string> GetIncrementedValues(int maxValue)
+            {
+                List<string> list = new List<string>();
+
+                for (int i = 0; i <= maxValue; i++)
+                    list.Add(string.Format("{0:d2}", i));
+
+                return list;
+            }
 
             void InitializeSizes() => HexagonSize = HexagonSize;
 
@@ -351,9 +371,10 @@ namespace Hexabell
                 TimeFontSizeScale = 0.9;
 
                 for (int i = 0; i < taskQuantity; i++)
-                {
                     SetTaskTime(i, $"0{i + 1}:0{i + 1}");
-                }
+
+                for (int i = 0; i < taskQuantity; i++)
+                    SetSoundPath(i, $"D:");
             }
         }
 
@@ -463,6 +484,8 @@ namespace Hexabell
         }
 
         private void SetTaskTime(int taskIndex, string inputTaskTime) => model.SetTaskTime(taskIndex, inputTaskTime);
+
+        private void SetSoundPath(int taskIndex, string soundPath) => model.SetSoundPath(taskIndex, soundPath);
 
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnPropertyChanged([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
