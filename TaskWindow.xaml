@@ -6,7 +6,38 @@
         xmlns:local="clr-namespace:Hexabell"
         mc:Ignorable="d"
         Title="TaskWindow"
-        WindowStyle="ToolWindow" ResizeMode="NoResize" Height="200" Width="300" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+        WindowStyle="ToolWindow" ResizeMode="NoResize" Height="300" Width="300" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="80"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="MaxDropDownHeight" Value="147"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Width" Value="110"/>
+        </Style>
+
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -14,7 +45,7 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <GroupBox Grid.Row="0" Header="Time" Margin="5">
+        <GroupBox Grid.Row="0" Header="Time">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -22,15 +53,16 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <ComboBox x:Name="HoursComboBox" Grid.Column="0"
-                      Height="20" Width="80" Margin="5" MaxDropDownHeight="100"/>
+                <ComboBox Grid.Column="0"
+                          ItemsSource="{Binding Path=Owner.DataContext.ValidHours, Mode=OneWay}"
+                          SelectedValue="{Binding Path=Hours}"/>
 
-                <TextBlock x:Name="SeparatorTextBlock" Grid.Column="1"
-                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
-                       Height="20" />
+                <TextBlock Grid.Column="1"
+                           Text="{Binding Path=Owner.DataContext.ValidSeparator, Mode=OneWay}"/>
 
-                <ComboBox x:Name="MinutesComboBox" Grid.Column="2"
-                      Height="20" Width="80" Margin="5" MaxDropDownHeight="100"/>
+                <ComboBox Grid.Column="2"
+                          ItemsSource="{Binding Path=Owner.DataContext.ValidMinutes, Mode=OneWay}"
+                          SelectedValue="{Binding Path=Minutes}"/>
             </Grid>
         </GroupBox>
 
@@ -41,17 +73,14 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <TextBox IsReadOnly="True" Text="{Binding Path=DataContext.SoundPath, Mode=OneWay}" Height="30" Width="110" Margin="5"/>
+                <TextBox IsReadOnly="True"
+                         Text="{Binding Path=SoundPath, Mode=OneWay}"/>
 
-                <Button Grid.Column="1" Click="ChangeSoundPath_Click"
-                Content="Change"
-                Height="30" Width="50" Margin="5"/>
+                <Button Grid.Column="1"
+                        Click="ChangeSoundPath_Click"
+                        Content="Change"/>
             </Grid>
         </GroupBox>
-        
-        
-        
-        
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
@@ -61,13 +90,10 @@
 
             <Button Grid.Column="0" Grid.Row="1"
                 IsDefault="True" Click="Accept_Click"
-                Content="Ok"
-                Height="30" Width="80" Margin="5"/>
+                Content="OK"/>
             <Button Grid.Column="1" Grid.Row="1"
                 IsCancel="True"
-                Content="Cancel"
-                Height="30" Width="80" Margin="5"/>
+                Content="Cancel"/>
         </Grid>
-        
     </Grid>
 </Window>

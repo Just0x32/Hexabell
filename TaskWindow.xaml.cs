@@ -1,7 +1,9 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,68 +20,33 @@ namespace Hexabell
     /// <summary>
     /// Interaction logic for TaskWindow.xaml
     /// </summary>
-    public partial class TaskWindow : Window
+    public partial class TaskWindow : Window, INotifyPropertyChanged
     {
-        private List<string> minutes = new List<string>();
-        private List<string> hours = new List<string>();
-        private string separator;
+        public string Hours { get; set; }
+        public string Minutes { get; set; }
 
-        public string Time { get; private set; }
-        public string SoundPath { get; private set; }
+        private string soundPath;
+        public string SoundPath
+        {
+            get => soundPath;
+            private set
+            {
+                soundPath = value;
+                OnPropertyChanged();
+            }
+        }
 
-        public TaskWindow(Button taskButton, string inputSoundPath)
+        public TaskWindow(string time, string soundPath)
         {
             InitializeComponent();
             DataContext = this;
 
-            GetInputTime();
-            GetInputSoundPath();
-
-            void GetInputTime()
-            {
-                InitializeHoursComboBox(taskButton.Content.ToString()[..2]);
-                InitializeMinutesComboBox(taskButton.Content.ToString()[^2..]);
-                InitializeSeparator(taskButton.Content.ToString()[2].ToString());
-            }
-            void GetInputSoundPath() => SoundPath = inputSoundPath;
+            Hours = time[..2];
+            Minutes = time[^2..];
+            SoundPath = soundPath;
         }
 
-        private void InitializeHoursComboBox(string inputHours)
-        {
-            for (int i = 0; i < 24; i++)
-            {
-                hours.Add(string.Format("{0:d2}", i));
-            }
-
-            HoursComboBox.ItemsSource = hours;
-            HoursComboBox.SelectedValue = inputHours;
-        }
-
-        private void InitializeMinutesComboBox(string inputMinutes)
-        {
-            for (int i = 0; i < 60; i++)
-            {
-                minutes.Add(string.Format("{0:d2}", i));
-            }
-
-            MinutesComboBox.ItemsSource = minutes;
-            MinutesComboBox.SelectedValue = inputMinutes;
-        }
-
-        private void InitializeSeparator(string inputSeparator)
-        {
-            separator = inputSeparator;
-            SeparatorTextBlock.Text = separator;
-        }
-
-        private void Accept_Click(object sender, RoutedEventArgs e)
-        {
-            string outputHours = HoursComboBox.SelectedValue as string;
-            string outputMinutes = MinutesComboBox.SelectedValue as string;
-            Time = outputHours + separator + outputMinutes;
-
-            this.DialogResult = true;
-        }
+        private void Accept_Click(object sender, RoutedEventArgs e) => this.DialogResult = true;
 
         private void ChangeSoundPath_Click(object sender, RoutedEventArgs e)
         {
@@ -88,11 +55,11 @@ namespace Hexabell
             openFileDialog.Multiselect = false;
 
             if (openFileDialog.ShowDialog() == true)
-            {
                 SoundPath = openFileDialog.FileName;
-                // Update TextBox
-            }
-                
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged ([CallerMemberName] string propertyName = "") => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
