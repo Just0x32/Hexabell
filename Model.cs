@@ -14,22 +14,9 @@ namespace Hexabell
     public class Model : INotifyPropertyChanged
     {
         private readonly int taskQuantity;
-        private readonly string defaultTaskHour = "00";
-        private readonly string defaultTaskMinute = "00";
-        private readonly char defaultTimeSeparator = ':';
-
-        private string[] taskTimes;
-        public string[] TaskTimes
-        {
-            get => taskTimes;
-            private set
-            {
-                if (taskTimes != value)
-                    taskTimes = value;
-
-                OnPropertyChanged();
-            }
-        }
+        public int[] Hours { get; private set; }
+        public int[] Minutes { get; private set; }
+        public string[] TaskTimes { get => default; private set => OnPropertyChanged(); }
 
         private string[] soundPaths;
         public string[] SoundPaths
@@ -68,14 +55,10 @@ namespace Hexabell
             {
                 IsTaskEnabled = new bool[taskQuantity];
                 TaskTimes = new string[taskQuantity];
+                Hours = new int[taskQuantity];
+                Minutes = new int[taskQuantity];
                 SoundPaths = new string[taskQuantity];
                 bellThreads = new Thread[taskQuantity];
-
-                for (int i = 0; i < taskQuantity; i++)
-                {
-                    IsTaskEnabled[i] = false;
-                    TaskTimes[i] = defaultTaskHour + defaultTimeSeparator + defaultTaskMinute;
-                }
             }
         }
 
@@ -87,44 +70,47 @@ namespace Hexabell
             void TaskStateChangedNotify() => IsTaskEnabled = IsTaskEnabled;
         }
 
-        public void SetTaskTime(int taskIndex, string inputTaskTime)
+        public void SetTaskTime(int taskIndex, int hour, int minute)
         {
-            if (AreValidValues())
+            if (IsValid(taskIndex, taskQuantity) && IsValid(hour, 23) && IsValid(minute, 59))
             {
-                TaskTimes[taskIndex] = inputTaskTime;
+                Hours[taskIndex] = hour;
+                Minutes[taskIndex] = minute;
                 TaskTimes = TaskTimes;
-            }
-
-            bool AreValidValues()
-            {
-                if (!string.IsNullOrEmpty(inputTaskTime))
-                {
-                    if (inputTaskTime.Length == 4)
-                        inputTaskTime = "0" + inputTaskTime;
-
-                    if (inputTaskTime.Length == 5)
-                    {
-                        int minutes;
-                        int hours;
-
-                        if (int.TryParse(inputTaskTime[0..1], out hours) && inputTaskTime[2] == defaultTimeSeparator && int.TryParse(inputTaskTime[3..4], out minutes))
-                        {
-                            if (hours < 24 && minutes < 60)
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-
-                return false;
             }
         }
 
         public void SetSoundPath(int taskIndex, string soundPath)
         {
-            SoundPaths[taskIndex] = soundPath;
-            SoundPaths = SoundPaths;
+            if (IsValid(taskIndex, taskQuantity) && IsValid(soundPath, 3))
+            {
+                SoundPaths[taskIndex] = soundPath;
+                SoundPaths = SoundPaths;
+            }
+        }
+
+        private bool IsValid(int value, int maxValue, int minValue = 0)
+        {
+            if (value >= 0 && value <= maxValue)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private bool IsValid(string value, int minLength = 0)
+        {
+            if (!string.IsNullOrEmpty(value) && value.Length >= minLength)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
