@@ -25,7 +25,7 @@ namespace Hexabell
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private static readonly int taskQuantity = 6;
-        public ViewModel viewModel = new ViewModel(taskQuantity);
+        public ViewModel viewModel = new ViewModel();
 
         private Dictionary<Button, int> indexFromButton = new Dictionary<Button, int>();
         private Dictionary<int, Button> buttonFromIndex = new Dictionary<int, Button>();
